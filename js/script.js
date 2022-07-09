@@ -90,4 +90,53 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   setClock(".timer", deadline);
+
+  //modal
+
+  const btnModal = document.querySelectorAll("[data-modal]"),
+    modalWindow = document.querySelector(".modal"),
+    btnCloseModalWindow = modalWindow.querySelector("[data-close]");
+
+  function openModalWindow() {
+    modalWindow.style.display = "block";
+    document.body.style.overflow = "hidden";
+    clearInterval(modalTimerId);
+  }
+
+  btnModal.forEach((btn) => {
+    btn.addEventListener("click", openModalWindow);
+  });
+
+  function closeModalWindow() {
+    modalWindow.style.display = "none";
+    document.body.style.overflow = "";
+  }
+
+  btnCloseModalWindow.addEventListener("click", closeModalWindow);
+
+  modalWindow.addEventListener("click", (e) => {
+    if (e.target === modalWindow) {
+      closeModalWindow();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.code === "Escape" && modalWindow.style.display == "block") {
+      closeModalWindow();
+    }
+  });
+
+  const modalTimerId = setTimeout(openModalWindow, 3000);
+
+  function showModalWindowByScroll() {
+    if (
+      window.pageYOffset + document.documentElement.clientHeight >=
+      document.documentElement.scrollHeight
+    ) {
+      openModalWindow();
+      window.removeEventListener("scroll", showModalWindowByScroll);
+    }
+  }
+
+  window.addEventListener("scroll", showModalWindowByScroll);
 });
