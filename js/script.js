@@ -224,7 +224,11 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   const message = {
+<<<<<<< HEAD
     loading: "img/form/spinner.svg",
+=======
+    loading: "Загрузка...",
+>>>>>>> 90fd864a3561aee0acdda88bcf33ec443df9fb10
     success: "Спасибо! Ваши данные переданы!",
     failure: "Ошибка отправки данных на сервер.",
   };
@@ -233,6 +237,7 @@ window.addEventListener("DOMContentLoaded", () => {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
+<<<<<<< HEAD
       const statusMessage = document.createElement("img");
       statusMessage.src = message.loading;
       statusMessage.style.cssText = `
@@ -240,6 +245,12 @@ window.addEventListener("DOMContentLoaded", () => {
           margin: 0 auto;
       `;
       form.insertAdjacentElement("afterend", statusMessage);
+=======
+      const statusMessage = document.createElement("div");
+      statusMessage.classList.add("status");
+      statusMessage.textContent = message.loading;
+      form.append(statusMessage);
+>>>>>>> 90fd864a3561aee0acdda88bcf33ec443df9fb10
 
       const request = new XMLHttpRequest();
       request.open("POST", "server.php");
@@ -259,15 +270,26 @@ window.addEventListener("DOMContentLoaded", () => {
       request.addEventListener("load", () => {
         if (request.status === 200) {
           console.log(request.response);
+<<<<<<< HEAD
           showThanksModal(message.success);
           form.reset();
           statusMessage.remove();
         } else {
           showThanksModal(message.failure);
+=======
+          statusMessage.textContent = message.success;
+          form.reset();
+          setTimeout(() => {
+            statusMessage.remove();
+          }, 3000);
+        } else {
+          statusMessage.textContent = message.failure;
+>>>>>>> 90fd864a3561aee0acdda88bcf33ec443df9fb10
         }
       });
     });
   }
+<<<<<<< HEAD
 
   function showThanksModal(message) {
     const prevModalDialog = document.querySelector(".modal__dialog");
@@ -291,4 +313,6 @@ window.addEventListener("DOMContentLoaded", () => {
       closeModalWindow();
     }, 4000);
   }
+=======
+>>>>>>> 90fd864a3561aee0acdda88bcf33ec443df9fb10
 });
