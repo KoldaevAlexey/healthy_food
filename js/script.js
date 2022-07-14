@@ -218,27 +218,26 @@ window.addEventListener("DOMContentLoaded", () => {
   // Forms
 
   const forms = document.querySelectorAll("form");
-
-  forms.forEach((form) => {
-    postData(form);
-  });
-
   const message = {
     loading: "img/form/spinner.svg",
-    success: "Спасибо! Ваши данные переданы!",
-    failure: "Ошибка отправки данных на сервер.",
+    success: "Спасибо! Скоро мы с вами свяжемся",
+    failure: "Что-то пошло не так...",
   };
+
+  forms.forEach((item) => {
+    postData(item);
+  });
 
   function postData(form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      const statusMessage = document.createElement("img");
+      let statusMessage = document.createElement("img");
       statusMessage.src = message.loading;
       statusMessage.style.cssText = `
-          display:block;
-          margin: 0 auto;
-      `;
+                display: block;
+                margin: 0 auto;
+            `;
       form.insertAdjacentElement("afterend", statusMessage);
 
       const formData = new FormData(form);
@@ -251,15 +250,13 @@ window.addEventListener("DOMContentLoaded", () => {
       fetch("server.php", {
         method: "POST",
         headers: {
-          "Content-type": "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(object),
       })
-        .then((data) => data.text())
         .then((data) => {
           console.log(data);
           showThanksModal(message.success);
-
           statusMessage.remove();
         })
         .catch(() => {
@@ -274,22 +271,22 @@ window.addEventListener("DOMContentLoaded", () => {
   function showThanksModal(message) {
     const prevModalDialog = document.querySelector(".modal__dialog");
 
-    prevModalDialog.style.display = "none";
+    prevModalDialog.classList.add("hide");
     openModalWindow();
 
     const thanksModal = document.createElement("div");
     thanksModal.classList.add("modal__dialog");
     thanksModal.innerHTML = `
-    <div class="modal__content">
-        <div class="modal__close" data-close>x</div>
-        <div class="modal__title">${message}</div>
-    </div>
-    `;
-
+            <div class="modal__content">
+                <div class="modal__close" data-close>×</div>
+                <div class="modal__title">${message}</div>
+            </div>
+        `;
     document.querySelector(".modal").append(thanksModal);
     setTimeout(() => {
       thanksModal.remove();
-      prevModalDialog.style.display = "block";
+      prevModalDialog.classList.add("show");
+      prevModalDialog.classList.remove("hide");
       closeModalWindow();
     }, 4000);
   }
